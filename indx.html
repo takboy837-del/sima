@@ -1,14 +1,1166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width= initial-scale=1.0">
-    <title>Document</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>مدیریت نوبت سالن</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #8e44ad,
+                #c471ed
+            );
+
+            color: white;
+            padding: 25px 20px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .stat-title {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8e44ad;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.06);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+
+            border: 1px solid #ddd;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+        input:focus {
+            border-color: #9b59b6;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(155,89,182,0.1);
+        }
+
+        .add-btn {
+            width: 100%;
+
+            border: none;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8e44ad,
+                    #c471ed
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 18px
+                rgba(142,68,173,0.25);
+        }
+
+        .appointments {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .appointment {
+            border: 1px solid #eee;
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            transition: 0.2s;
+        }
+
+        .appointment:hover {
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,0.06);
+        }
+
+        .customer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: #f0e4f5;
+
+            color: #8e44ad;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .customer-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .service {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .appointment-info {
+            text-align: left;
+        }
+
+        .time {
+            color: #8e44ad;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .phone {
+            color: #777;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .delete-btn {
+            border: none;
+
+            background: #fff0f0;
+
+            color: #e74c3c;
+
+            padding: 8px 12px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            background: #ffe0e0;
+        }
+
+        .empty {
+            text-align: center;
+
+            padding: 40px 10px;
+
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .appointment {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .appointment-info {
+                text-align: right;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
-<button>
-    <a href="page.html"><h1>hh<h1>
-    </a>
-</button>
-</body>
-</html>
+
+
+<header class="header">
+
+    <div class="header-content">
+
+        <h1>
+         نوبت دهی سالن سیما جون
+        </h1>
+
+        <p>
+        مخصوص مستریان مفت خور<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>مدیریت نوبت سالن</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #8e44ad,
+                #c471ed
+            );
+
+            color: white;
+            padding: 25px 20px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .stat-title {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8e44ad;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.06);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+
+            border: 1px solid #ddd;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+        input:focus {
+            border-color: #9b59b6;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(155,89,182,0.1);
+        }
+
+        .add-btn {
+            width: 100%;
+
+            border: none;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8e44ad,
+                    #c471ed
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 18px
+                rgba(142,68,173,0.25);
+        }
+
+        .appointments {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .appointment {
+            border: 1px solid #eee;
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            transition: 0.2s;
+        }
+
+        .appointment:hover {
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,0.06);
+        }
+
+        .customer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: #f0e4f5;
+
+            color: #8e44ad;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .customer-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .service {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .appointment-info {
+            text-align: left;
+        }
+
+        .time {
+            color: #8e44ad;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .phone {
+            color: #777;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .delete-btn {
+            border: none;
+
+            background: #fff0f0;
+
+            color: #e74c3c;
+
+            padding: 8px 12px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            background: #ffe0e0;
+        }
+
+        .empty {
+            text-align: center;
+
+            padding: 40px 10px;
+
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .appointment {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .appointment-info {
+                text-align: right;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <div class="header-content">
+
+        <h1>
+            پنل مدیریت نوبت سالن
+        </h1>
+
+        <p>
+            مدیریت سریع و ساده نوبت‌های مشتریان
+        </p>
+
+    </div>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-title">
+                نوبت‌های امروز
+            </div>
+
+            <div
+                class="stat-number"
+                id="todayCount">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                کل نوبت‌ها
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalCount">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                آخرین نوبت
+            </div>
+
+            <div
+                class="stat-number"
+                id="lastTime">
+                ---
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="grid">
+
+
+        <!-- ثبت نوبت -->
+
+        <div class="card">
+
+            <h2>
+                ثبت نوبت جدید
+            </h2>
+
+
+            <form id="appointmentForm">
+
+
+                <!-- نام مشتری -->
+
+                <div class="input-group">
+
+                    <label>
+                        نام مشتری
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                    >
+
+                </div>
+
+
+                <!-- شماره تماس -->
+
+                <div class="input-group">
+
+                    <label>
+                        شماره تماس
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                    >
+
+                </div>
+
+
+                <!-- خدمات -->
+
+                <div class="input-group">
+
+                    <label>
+                        نوع خدمات
+                    </label>
+
+                    <input
+                        type="text"
+                        id="service"
+                    >
+
+                </div>
+
+
+                <!-- تاریخ دستی -->
+
+                <div class="input-group">
+
+                    <label>
+                        تاریخ نوبت
+                    </label>
+
+                    <input
+                        type="text"
+                        id="date"
+                        placeholder="مثلاً 1405/05/28"
+                    >
+
+                </div>
+
+
+                <!-- ساعت دستی -->
+
+                <div class="input-group">
+
+                    <label>
+                        ساعت نوبت
+                    </label>
+
+                    <input
+                        type="text"
+                        id="time"
+                        placeholder="مثلاً 14:30"
+                    >
+
+                </div>
+
+
+                <button
+                    class="add-btn"
+                    type="submit">
+
+                    + ثبت نوبت
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- لیست نوبت‌ها -->
+
+        <div class="card">
+
+            <h2>
+                نوبت‌های ثبت شده
+            </h2>
+
+            <div
+                id="appointments"
+                class="appointments">
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+let appointments =
+    JSON.parse(
+        localStorage.getItem(
+            "salonAppointments"
+        )
+    ) || [];
+
+
+
+const form =
+    document.getElementById(
+        "appointmentForm"
+    );
+
+
+const list =
+    document.getElementById(
+        "appointments"
+    );
+
+
+const todayCount =
+    document.getElementById(
+        "todayCount"
+    );
+
+
+const totalCount =
+    document.getElementById(
+        "totalCount"
+    );
+
+
+const lastTime =
+    document.getElementById(
+        "lastTime"
+    );
+
+
+
+/* ثبت نوبت */
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document.getElementById(
+                "name"
+            ).value.trim();
+
+
+        const phone =
+            document.getElementById(
+                "phone"
+            ).value.trim();
+
+
+        const service =
+            document.getElementById(
+                "service"
+            ).value.trim();
+
+
+        const date =
+            document.getElementById(
+                "date"
+            ).value.trim();
+
+
+        const time =
+            document.getElementById(
+                "time"
+            ).value.trim();
+
+
+
+        /* بررسی نوبت تکراری */
+
+        const duplicate =
+            appointments.some(
+                function(item) {
+
+                    return (
+                        item.date === date &&
+                        item.time === time
+                    );
+
+                }
+            );
+
+
+        if (duplicate) {
+
+            alert(
+                "⚠️ این تاریخ و ساعت قبلاً ثبت شده است."
+            );
+
+            return;
+
+        }
+
+
+
+        const appointment = {
+
+            id: Date.now(),
+
+            name: name,
+
+            phone: phone,
+
+            service: service,
+
+            date: date,
+
+            time: time
+
+        };
+
+
+
+        appointments.push(
+            appointment
+        );
+
+
+        saveData();
+
+
+        form.reset();
+
+
+        renderAppointments();
+
+
+        alert(
+            "✅ نوبت با موفقیت ثبت شد!"
+        );
+
+    }
+);
+
+
+
+/* ذخیره */
+
+function saveData() {
+
+    localStorage.setItem(
+        "salonAppointments",
+        JSON.stringify(
+            appointments
+        )
+    );
+
+}
+
+
+
+/* نمایش نوبت‌ها */
+
+function renderAppointments() {
+
+    list.innerHTML = "";
+
+
+    if (
+        appointments.length === 0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📅
+                </div>
+
+                هنوز نوبتی ثبت نشده است.
+
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+
+        const sorted =
+            [...appointments].sort(
+                function(a, b) {
+
+                    return (
+                        a.date + a.time
+                    ).localeCompare(
+                        b.date + b.time
+                    );
+
+                }
+            );
+
+
+        sorted.forEach(
+            function(item) {
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "appointment";
+
+
+                const firstLetter =
+                    item.name
+                        ? item.name.charAt(0)
+                        : "👤";
+
+
+                div.innerHTML = `
+
+                    <div class="customer">
+
+                        <div class="avatar">
+
+                            ${firstLetter}
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                class="customer-name">
+
+                                ${
+                                    item.name ||
+                                    "بدون نام"
+                                }
+
+                            </div>
+
+
+                            <div
+                                class="service">
+
+                                ${
+                                    item.service ||
+                                    "خدمات وارد نشده"
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="appointment-info">
+
+                        <div class="time">
+
+                            🕐 ${item.time || "---"}
+
+                        </div>
+
+
+                        <div class="phone">
+
+                            📅 ${item.date || "---"}
+
+                        </div>
+
+
+                        ${
+    
